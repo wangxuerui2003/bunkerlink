@@ -44,3 +44,6 @@ app.*.map.json
 
 # pocketbase
 pb_data/
+
+# reverse proxy ssl cert
+nginx/certs
