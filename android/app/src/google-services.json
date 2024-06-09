@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "727912664182",
+    "project_id": "buckerlink",
+    "storage_bucket": "buckerlink.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727912664182:android:12302ae4780f737544e357",
+        "android_client_info": {
+          "package_name": "com.example.bunkerlink"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPJvzXtNR1hV4Mtohql_U6zAIoDiCg3Lc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
