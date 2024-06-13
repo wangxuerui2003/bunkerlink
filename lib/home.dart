@@ -32,8 +32,7 @@ class FrontScreen extends StatelessWidget {
             SizedBox(
               width: 200.0,
               child: ElevatedButton(
-                onPressed: () {
-                },
+                onPressed: () {},
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all<Color>(Colors.lightGreen), 
                   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -66,7 +65,7 @@ class FrontScreen extends StatelessWidget {
               width: 200.0,
               child: ElevatedButton(
                 onPressed: () {
-                  // Add your button later lol
+                  Navigator.pushNamed(context, '/map');
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all<Color>(Colors.green), 
