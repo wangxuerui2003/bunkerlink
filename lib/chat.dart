@@ -1,13 +1,13 @@
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 
-class MapScreen extends StatefulWidget {
+class ChatScreen extends StatefulWidget {
   @override
-  _MapScreenState createState() => _MapScreenState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
-  int _selectedIndex = 1; // Assuming map is the second item
+class _ChatScreenState extends State<ChatScreen> {
+  int _selectedIndex = 0; // Assuming chat is the first item
 
   void _onItemTapped(int index) {
     switch (index) {
@@ -26,8 +26,8 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Map Screen'),
+      body: const Center(
+        child: Text('Chat Screen'),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _selectedIndex,
