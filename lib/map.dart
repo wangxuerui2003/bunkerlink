@@ -1,5 +1,5 @@
-import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -7,31 +7,26 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  int _selectedIndex = 1; // Assuming map is the second item
+  late GoogleMapController mapController;
 
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, '/chat');
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/map');
-        break;
-      case 2:
-        Navigator.pushNamed(context, '/sos');
-        break;
-    }
+  static const LatLng _center = const LatLng(3.1390, 101.6869); // Kuala Lumpur coordinates
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('Map Screen'),
+      appBar: AppBar(
+        title: Text('Map'),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+      body: GoogleMap(
+        onMapCreated: _onMapCreated,
+        initialCameraPosition: CameraPosition(
+          target: _center,
+          zoom: 11.0,
+        ),
       ),
     );
   }
