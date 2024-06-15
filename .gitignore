@@ -47,3 +47,10 @@ pb_data/
 
 # reverse proxy ssl cert
 nginx/certs
+
+# .env
+.env
+.env.local
+
+# text editor config
+/.vscode
