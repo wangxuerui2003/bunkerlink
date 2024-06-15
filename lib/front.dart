@@ -1,3 +1,4 @@
+import 'package:bunkerlink/main.dart';
 import 'package:flutter/material.dart';
 
 class FrontScreen extends StatelessWidget {
@@ -32,12 +33,17 @@ class FrontScreen extends StatelessWidget {
             SizedBox(
               width: 200.0,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainScreen()),
+                  );
+                },
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all<Color>(Colors.lightGreen), 
+                  backgroundColor: WidgetStateProperty.all<Color>(Colors.lightGreen),
                   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0), 
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
                 ),
@@ -45,7 +51,7 @@ class FrontScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      Icons.play_arrow, 
+                      Icons.play_arrow,
                       color: Colors.white,
                     ),
                     SizedBox(width: 8.0),
@@ -53,7 +59,7 @@ class FrontScreen extends StatelessWidget {
                       'Get Started',
                       style: TextStyle(
                         fontSize: 20.0,
-                        color: Colors.white, 
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -65,13 +71,16 @@ class FrontScreen extends StatelessWidget {
               width: 200.0,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/map');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainScreen()),
+                  );
                 },
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all<Color>(Colors.green), 
+                  backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
                   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0), 
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
                 ),
@@ -79,7 +88,7 @@ class FrontScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      Icons.map, 
+                      Icons.map,
                       color: Colors.white,
                     ),
                     SizedBox(width: 8.0),

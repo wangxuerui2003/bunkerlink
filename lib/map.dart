@@ -9,7 +9,7 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController mapController;
 
-  static const LatLng _center = const LatLng(3.1390, 101.6869); // Kuala Lumpur coordinates
+  static const LatLng _center = const LatLng(3.1390, 101.6869);
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -18,9 +18,6 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Map'),
-      ),
       body: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
