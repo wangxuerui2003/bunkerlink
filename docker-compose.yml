@@ -9,23 +9,10 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - default_network
+      - cf_tunnel
     volumes:
       - ./pb/pb_data:/pb/pb_data
 
-  nginx:
-    image: "nginx:latest"
-    container_name: bunkerlink-nginx
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./nginx/certs:/etc/nginx/certs:ro
-    ports:
-      - "8090:443"
-    depends_on:
-      - pocketbase
-    networks:
-      - default_network
-
-
 networks:
-  default_network:
+  cf_tunnel:
+    external: true
