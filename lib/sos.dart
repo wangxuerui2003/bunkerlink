@@ -1,13 +1,15 @@
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatefulWidget {
+class SosScreen extends StatefulWidget {
+  const SosScreen({super.key});
+
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _SosScreenState createState() => _SosScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-  final int _selectedIndex = 1; // Assuming chat is the first item
+class _SosScreenState extends State<SosScreen> {
+  final int _selectedIndex = 2; // Assuming Sos is the 3rd item
 
   void _onItemTapped(int index) {
     switch (index) {
@@ -27,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: const Center(
-        child: Text('Chat Screen'),
+        child: Text('Sos Screen'),
       ),
     );
   }
