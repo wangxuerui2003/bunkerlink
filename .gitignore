@@ -51,3 +51,6 @@ nginx/certs
 # .env
 .env
 .env.local
+
+# text editor config
+/.vscode
