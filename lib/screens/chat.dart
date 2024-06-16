@@ -7,19 +7,22 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final int _selectedIndex = 1; // Assuming chat is the first item
+  final int _selectedIndex = 0; // Assuming chat is the first item
 
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/map');
+        Navigator.pushNamed(context, '/chat');
         break;
       case 1:
-        Navigator.pushNamed(context, '/chat');
+        Navigator.pushNamed(context, '/map');
         break;
       case 2:
         Navigator.pushNamed(context, '/sos');
         break;
+      case 3:
+        Navigator.pushNamed(context, '/profile');
+        break;        
     }
   }
 
@@ -28,6 +31,10 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       body: const Center(
         child: Text('Chat Screen'),
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }

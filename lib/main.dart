@@ -1,14 +1,11 @@
+import 'package:bunkerlink/screens/profile.dart';
 import 'package:flutter/material.dart';
-import 'map.dart';
-import 'chat.dart';
-import 'sos.dart';
-import 'front.dart';
-import 'widgets/CustomBottomNavigationBar.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'environment.dart';
+import 'screens/map.dart';
+import 'screens/chat.dart';
+import 'screens/sos.dart';
+import 'screens/front.dart';
 
-void main() async {
-  await dotenv.load(fileName: ".env");
+void main() {
   runApp(MyApp());
 }
 
@@ -20,7 +17,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/map': (context) => MapScreen(),
         '/chat': (context) => ChatScreen(),
-        '/sos': (context) => SosScreen(),
+        '/sos': (context) => const SosScreen(),
+        '/profile': (context) => const ProfileScreen(),        
       },
     );
   }
@@ -38,6 +36,7 @@ class _MainScreenState extends State<MainScreen> {
     ChatScreen(),
     MapScreen(),
     const SosScreen(),
+    const ProfileScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -50,10 +49,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
     );
   }
 }

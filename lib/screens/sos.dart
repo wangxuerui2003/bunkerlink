@@ -9,19 +9,24 @@ class SosScreen extends StatefulWidget {
 }
 
 class _SosScreenState extends State<SosScreen> {
-  final int _selectedIndex = 2; // Assuming Sos is the 3rd item
+  final int _selectedIndex = 2; // Remove this line
 
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/map');
-        break;
-      case 1:
         Navigator.pushNamed(context, '/chat');
         break;
+      case 1:
+        Navigator.pushNamed(context, '/map');
+        break;
       case 2:
+        // Optional: You might want to check if you are already on the sos screen
+        // before pushing it again.
         Navigator.pushNamed(context, '/sos');
         break;
+      case 3:
+        Navigator.pushNamed(context, '/profile');
+        break;        
     }
   }
 
@@ -29,8 +34,12 @@ class _SosScreenState extends State<SosScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: const Center(
-        child: Text('Sos Screen'),
+        child: Text('SOS Screen'),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _selectedIndex, // Pass _selectedIndex here
+        onTap: _onItemTapped,
+      ),      
     );
   }
 }
