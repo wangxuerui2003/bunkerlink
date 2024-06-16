@@ -1,7 +1,9 @@
-import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
+import 'package:bunkerlink/env/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -9,25 +11,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  final int _selectedIndex = 1;
-
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, '/chat');
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/map');
-        break;
-      case 2:
-        Navigator.pushNamed(context, '/sos');
-        break;
-      case 3:
-        Navigator.pushNamed(context, '/profile');
-        break;        
-    }
-  }
-
   late GoogleMapController mapController;
   LatLng _initialPosition = const LatLng(3.1390, 101.6869);
   bool _isLocationEnabled = false;
@@ -74,20 +57,60 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
+
     return Scaffold(
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _initialPosition,
-          zoom: 11.0,
-        ),
-        myLocationEnabled: _isLocationEnabled,
-        myLocationButtonEnabled: true,
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+      body: Column(
+        children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+              child: GooglePlaceAutoCompleteTextField(
+                textEditingController: controller,
+                googleAPIKey: "AIzaSyDEeSyYedSX-iemRyqMhDnh3QVx0dRVeNE",
+                debounceTime: 800, // Optional: default is 600 ms
+                isLatLngRequired: true, // Optional: request LatLng with place detail
+                getPlaceDetailWithLatLng: (Prediction prediction) {
+                  // Callback when LatLng is required
+                  print("Place Details: ${prediction.lat}, ${prediction.lng}");
+                },
+                itemClick: (Prediction prediction) {
+                  // Callback when an item is clicked
+                  controller.text = prediction.description ?? "";
+                  controller.selection = TextSelection.fromPosition(
+                      TextPosition(offset: prediction.description!.length));
+                },
+                itemBuilder: (context, index, Prediction prediction) {
+                  // Custom item builder
+                  return Container(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.location_on),
+                        SizedBox(width: 7),
+                        Expanded(child: Text("${prediction.description ?? ""}")),
+                      ],
+                    ),
+                  );
+                },
+                seperatedBuilder: Divider(), // Optional: add a separator between items
+                isCrossBtnShown: true, // Optional: show a close icon
+                containerHorizontalPadding: 10, // Optional: container padding
+              ),
+            ),          
+          Expanded(
+            child: GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _initialPosition,
+                zoom: 11.0,
+              ),
+              myLocationEnabled: _isLocationEnabled,
+              myLocationButtonEnabled: true,
+            ),
+          ),
+        ],
       ),
     );
   }
+
 }
