@@ -1,4 +1,4 @@
-import 'package:bunkerlink/environment.dart';
+import 'package:bunkerlink/env/environment.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class AuthService {

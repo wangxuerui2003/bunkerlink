@@ -1,4 +1,5 @@
-import 'package:bunkerlink/main.dart';
+import 'package:bunkerlink/screens/login.dart';
+import 'package:bunkerlink/screens/map.dart';
 import 'package:flutter/material.dart';
 
 class FrontScreen extends StatelessWidget {
@@ -36,7 +37,7 @@ class FrontScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MainScreen()),
+                    MaterialPageRoute(builder: (context) => const LoginScaffold()),
                   );
                 },
                 style: ButtonStyle(
@@ -73,7 +74,7 @@ class FrontScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MainScreen()),
+                    MaterialPageRoute(builder: (context) => MapScreen()),
                   );
                 },
                 style: ButtonStyle(

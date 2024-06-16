@@ -1,3 +1,4 @@
+import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,6 +9,25 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  final int _selectedIndex = 1;
+
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/chat');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/map');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/sos');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/profile');
+        break;        
+    }
+  }
+
   late GoogleMapController mapController;
   LatLng _initialPosition = const LatLng(3.1390, 101.6869);
   bool _isLocationEnabled = false;
@@ -63,6 +83,10 @@ class _MapScreenState extends State<MapScreen> {
         ),
         myLocationEnabled: _isLocationEnabled,
         myLocationButtonEnabled: true,
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
