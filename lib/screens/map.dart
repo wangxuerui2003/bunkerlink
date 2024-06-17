@@ -1,4 +1,5 @@
 import 'package:bunkerlink/env/environment.dart';
+import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
@@ -18,6 +19,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+
     _checkLocationPermission();
   }
 
@@ -59,58 +61,94 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
 
+    final int _selectedIndex = 1;
+    void _onItemTapped(int index) {
+      switch (index) {
+        case 0:
+          Navigator.pushNamed(context, '/chat');
+          break;
+        case 1:
+          Navigator.pushNamed(context, '/map');
+          break;
+        case 2:
+          Navigator.pushNamed(context, '/sos');
+          break;
+        case 3:
+          Navigator.pushNamed(context, '/profile');
+          break;
+      }
+    }
+
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: GooglePlaceAutoCompleteTextField(
+          GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _initialPosition,
+              zoom: 11.0,
+            ),
+            myLocationEnabled: _isLocationEnabled,
+            myLocationButtonEnabled: true,
+          ),
+          Positioned(
+            top: 64.0,
+            left: 8.0,
+            right: 8.0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0), // Adjust the radius as needed
+              ),
+              child: GooglePlaceAutoCompleteTextField(              
                 textEditingController: controller,
                 googleAPIKey: "AIzaSyDEeSyYedSX-iemRyqMhDnh3QVx0dRVeNE",
-                debounceTime: 800, // Optional: default is 600 ms
-                isLatLngRequired: true, // Optional: request LatLng with place detail
+                debounceTime: 800,
+                isLatLngRequired: true,
+                inputDecoration: const InputDecoration(
+                  hintText: 'Enter your location', // Placeholder text
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(16.0),
+                ),
                 getPlaceDetailWithLatLng: (Prediction prediction) {
-                  // Callback when LatLng is required
                   print("Place Details: ${prediction.lat}, ${prediction.lng}");
                 },
                 itemClick: (Prediction prediction) {
-                  // Callback when an item is clicked
-                  controller.text = prediction.description ?? "";
+                  controller.text = prediction.description ?? "Enter your location";
                   controller.selection = TextSelection.fromPosition(
-                      TextPosition(offset: prediction.description!.length));
+                    TextPosition(offset: prediction.description?.length ?? 0),
+                  );
                 },
                 itemBuilder: (context, index, Prediction prediction) {
-                  // Custom item builder
                   return Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Row(
                       children: [
-                        Icon(Icons.location_on),
-                        SizedBox(width: 7),
-                        Expanded(child: Text("${prediction.description ?? ""}")),
+                        const Icon(Icons.location_on),
+                        const SizedBox(width: 7),
+                        Expanded(
+                          child: Text(
+                            prediction.description ?? "",
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ),
                       ],
                     ),
                   );
                 },
-                seperatedBuilder: Divider(), // Optional: add a separator between items
-                isCrossBtnShown: true, // Optional: show a close icon
-                containerHorizontalPadding: 10, // Optional: container padding
+                seperatedBuilder: const Divider(),
+                isCrossBtnShown: true,
+                containerHorizontalPadding: 10,
               ),
-            ),          
-          Expanded(
-            child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _initialPosition,
-                zoom: 11.0,
-              ),
-              myLocationEnabled: _isLocationEnabled,
-              myLocationButtonEnabled: true,
-            ),
+            )
+
           ),
         ],
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
     );
   }
-
 }
