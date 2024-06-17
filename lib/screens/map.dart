@@ -1,8 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:bunkerlink/widgets/mapWidgets/GooglePlaceAutoCompleteTextField.dart';
 import 'package:bunkerlink/widgets/mapWidgets/MapWidget.dart';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 
 class MapScreen extends StatefulWidget {
@@ -11,19 +10,12 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  late GoogleMapController mapController;
-  LatLng _initialPosition = const LatLng(3.1390, 101.6869);
   bool _isLocationEnabled = false;
 
   @override
   void initState() {
     super.initState();
     _checkLocationPermission();
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-    _goToCurrentLocation();
   }
 
   Future<void> _checkLocationPermission() async {
@@ -39,20 +31,6 @@ class _MapScreenState extends State<MapScreen> {
         _isLocationEnabled = true;
       });
     }
-  }
-
-  Future<void> _goToCurrentLocation() async {
-    if (!_isLocationEnabled) return;
-
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    mapController.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        target: LatLng(position.latitude, position.longitude),
-        zoom: 14.0,
-      ),
-    ));
   }
 
   @override
