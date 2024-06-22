@@ -30,7 +30,7 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<RecordModel> register(
+  Future<RecordAuth> register(
       String username, String email, String password, String nickname) async {
     final body = <String, dynamic>{
       "username": username,
@@ -42,8 +42,8 @@ class AuthService with ChangeNotifier {
     };
 
     try {
-      final record = await client.collection('users').create(body: body);
-      return record;
+      await client.collection('users').create(body: body);
+      return await login(email, password);
     } on ClientException catch (error) {
       final data = error.response['data'];
       throw "${data.keys.first}: ${data.values.first['message']}";
