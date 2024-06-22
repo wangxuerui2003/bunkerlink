@@ -16,48 +16,48 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-void _onItemTapped(int index) {
-  if (index != currentIndex) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => ChatScreen(),
-            transitionDuration: Duration.zero,
-          ),
-        );
-        break;
-      case 1:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => MapScreen(),
-            transitionDuration: Duration.zero,
-          ),
-        );
-        break;
-      case 2:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => SosScreen(),
-            transitionDuration: Duration.zero,
-          ),
-        );
-        break;
-      case 3:
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => ProfileScreen(),
-            transitionDuration: Duration.zero,
-          ),
-        );
-        break;
+    void _onItemTapped(int index) {
+      if (index != currentIndex) {
+        switch (index) {
+          case 0:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => ChatScreen(),
+                transitionDuration: Duration.zero,
+              ),
+            );
+            break;
+          case 1:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => MapScreen(),
+                transitionDuration: Duration.zero,
+              ),
+            );
+            break;
+          case 2:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => SosScreen(),
+                transitionDuration: Duration.zero,
+              ),
+            );
+            break;
+          case 3:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => ProfileScreen(),
+                transitionDuration: Duration.zero,
+              ),
+            );
+            break;
+        }
+      }
     }
-  }
-}
 
 
     return BottomNavigationBar(

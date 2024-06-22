@@ -23,6 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text('Profile'),
         foregroundColor: Colors.black,
+        automaticallyImplyLeading: false,
         elevation: 0,
         actions: [
           IconButton(
