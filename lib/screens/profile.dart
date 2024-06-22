@@ -11,23 +11,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final int _selectedIndex = 3;
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, '/chat');
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/map');
-        break;
-      case 2:
-        Navigator.pushNamed(context, '/sos');
-        break;
-      case 3:
-        Navigator.pushNamed(context, '/profile');
-        break;
-    }
-  }
 
   void handleLogout() {
     final authService = Provider.of<AuthService>(context, listen: false);
@@ -52,8 +35,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Text('Profile Screen'),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        currentIndex: 3,
+        onTap: (index) {},
       ),
     );
   }

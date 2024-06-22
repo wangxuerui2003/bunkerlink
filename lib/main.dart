@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/map': (context) => MapScreen(),
         '/chat': (context) => ChatScreen(),
-        '/sos': (context) => const SosScreen(),
+        '/sos': (context) => SosScreen(),
         '/profile': (context) => const ProfileScreen(),
       },
     );
@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     ChatScreen(),
     MapScreen(),
-    const SosScreen(),
+    SosScreen(),
     const ProfileScreen()
   ];
 
