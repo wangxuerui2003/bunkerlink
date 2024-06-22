@@ -17,6 +17,7 @@ dependencies:
   location: ^6.0.2
   logging: ^1.2.0
   pocketbase: ^0.18.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

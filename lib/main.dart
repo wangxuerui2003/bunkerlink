@@ -1,12 +1,19 @@
 import 'package:bunkerlink/screens/profile.dart';
+import 'package:bunkerlink/services/auth/service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 import 'screens/map.dart';
 import 'screens/chat.dart';
 import 'screens/sos.dart';
 import 'screens/front.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  await dotenv.load(fileName: ".env");
+  runApp(ChangeNotifierProvider(
+    create: (context) => AuthService(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/map': (context) => MapScreen(),
         '/chat': (context) => ChatScreen(),
         '/sos': (context) => const SosScreen(),
-        '/profile': (context) => const ProfileScreen(),        
+        '/profile': (context) => const ProfileScreen(),
       },
     );
   }

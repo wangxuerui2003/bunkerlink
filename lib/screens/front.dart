@@ -1,5 +1,5 @@
-import 'package:bunkerlink/screens/login.dart';
 import 'package:bunkerlink/screens/map.dart';
+import 'package:bunkerlink/services/auth/gate.dart';
 import 'package:flutter/material.dart';
 
 class FrontScreen extends StatelessWidget {
@@ -36,12 +36,15 @@ class FrontScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginScaffold()),
-                  );
+                      context,
+                      MaterialPageRoute(
+                        // builder: (context) => const LoginScreen()),
+                        builder: (context) => const AuthGate(),
+                      ));
                 },
                 style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all<Color>(Colors.lightGreen),
+                  backgroundColor:
+                      WidgetStateProperty.all<Color>(Colors.lightGreen),
                   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),

@@ -4,27 +4,38 @@ import 'package:bunkerlink/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   final void Function()? onTap;
-  const LoginScreen({
+
+  const RegisterScreen({
     super.key,
     required this.onTap,
   });
 
-  _LoginScreenState createState() => _LoginScreenState();
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final nicknameController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
 
-  void handleLogin() async {
+  void handleRegister() async {
     final authService = Provider.of<AuthService>(context, listen: false);
     final email = emailController.text;
     final password = passwordController.text;
+    final passwordConfirm = passwordConfirmController.text;
+    final username = usernameController.text;
+    final nickname = nicknameController.text;
 
     try {
-      await authService.login(email, password);
+      if (password != passwordConfirm) {
+        throw 'Passwords do not match';
+      }
+      await authService.register(username, email, password, nickname);
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -39,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Register'),
         foregroundColor: Colors.black, // To make the title color black
         elevation: 0, // Removes the shadow under the AppBar
       ),
@@ -78,9 +89,42 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'Email',
                 obscureText: false,
                 decoration: InputDecoration(
-                  labelText: 'Username or Email',
+                  labelText: 'Email',
+                  prefixIcon: const Icon(Icons.email, color: Colors.lightGreen),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20.0),
+
+              // username field
+              MyTextField(
+                controller: usernameController,
+                hintText: 'Username',
+                obscureText: false,
+                decoration: InputDecoration(
+                  labelText: 'Username',
                   prefixIcon:
                       const Icon(Icons.person, color: Colors.lightGreen),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20.0),
+
+              // nickname field
+              MyTextField(
+                controller: nicknameController,
+                hintText: 'Nickname',
+                obscureText: false,
+                decoration: InputDecoration(
+                  labelText: 'Nickname',
+                  prefixIcon: const Icon(Icons.person_2_rounded,
+                      color: Colors.lightGreen),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -105,8 +149,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20.0),
 
-              // login button
-              MyButton(onTap: handleLogin, text: "Sign In"),
+              // password confirm field
+              MyTextField(
+                controller: passwordConfirmController,
+                hintText: "confirm password",
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  prefixIcon: const Icon(Icons.lock, color: Colors.lightGreen),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20.0),
+
+              // sign up button
+              MyButton(onTap: handleRegister, text: "Sign up"),
 
               const SizedBox(height: 20.0),
 
@@ -114,11 +174,11 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Not a member?"),
+                  const Text("Already a member?"),
                   const SizedBox(width: 4),
                   TextButton(
                     onPressed: widget.onTap,
-                    child: const Text("Register now"),
+                    child: const Text("Login now"),
                   ),
                 ],
               ),
