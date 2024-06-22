@@ -1,29 +1,31 @@
-import 'package:bunkerlink/services/auth/service.dart';
 import 'package:bunkerlink/widgets/MyButton.dart';
 import 'package:bunkerlink/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   final void Function()? onTap;
-  const LoginScreen({
+
+  const RegisterScreen({
     super.key,
     required this.onTap,
   });
 
-  _LoginScreenState createState() => _LoginScreenState();
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
 
-  void handleLogin() async {}
+  void handleRegister() async {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Register'),
         foregroundColor: Colors.black, // To make the title color black
         elevation: 0, // Removes the shadow under the AppBar
       ),
@@ -89,8 +91,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20.0),
 
-              // login button
-              MyButton(onTap: handleLogin, text: "Sign In"),
+              // password confirm field
+              MyTextField(
+                controller: passwordConfirmController,
+                hintText: "confirm password",
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  prefixIcon: const Icon(Icons.lock, color: Colors.lightGreen),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20.0),
+
+              // sign up button
+              MyButton(onTap: handleRegister, text: "Sign up"),
 
               const SizedBox(height: 20.0),
 
@@ -98,11 +116,11 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Not a member?"),
+                  const Text("Already a member?"),
                   const SizedBox(width: 4),
                   TextButton(
                     onPressed: widget.onTap,
-                    child: const Text("Register now"),
+                    child: const Text("Login now"),
                   ),
                 ],
               ),

@@ -1,11 +1,13 @@
 import 'package:bunkerlink/screens/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'screens/map.dart';
 import 'screens/chat.dart';
 import 'screens/sos.dart';
 import 'screens/front.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
 
