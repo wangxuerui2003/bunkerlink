@@ -1,33 +1,38 @@
+import 'dart:async';
 import 'package:bunkerlink/env/environment.dart';
+import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-class AuthService {
-  static final PocketBase client = PocketBase(Environment.pocketbaseUri);
+class AuthService with ChangeNotifier {
+  final PocketBase client = PocketBase(Environment.pocketbaseUri);
 
-  static bool isLoggedIn() {
-    return client.authStore.isValid;
+  StreamController<bool> loginStatusController =
+      StreamController<bool>.broadcast();
+  Stream<bool> get loginStatusStream => loginStatusController.stream;
+
+  AuthService() {
+    client.authStore.onChange.listen((e) {
+      loginStatusController.add(client.authStore.isValid);
+      notifyListeners();
+    });
   }
 
-  static Future<Map<String, dynamic>> login(String usernameOrEmail, String password) async {
+  bool get isLoggedIn => client.authStore.isValid;
+
+  Future<RecordAuth> login(String usernameOrEmail, String password) async {
     try {
-      final authData = await client.collection('users').authWithPassword(
-        usernameOrEmail,
-        password
-      );
-      return {
-        'status': 'success',
-        'data': authData
-      };
-    } catch (error) {
-      return {
-        'status': 'failed',
-        'data': error
-      };
+      final authData = await client
+          .collection('users')
+          .authWithPassword(usernameOrEmail, password);
+      return authData;
+    } on ClientException catch (error) {
+      throw error.response['message'];
     }
   }
 
-  static Future<Map<String, dynamic>> register(String username, String email, String password, String nickname) async {
-    final body = <String, dynamic> {
+  Future<RecordModel> register(
+      String username, String email, String password, String nickname) async {
+    final body = <String, dynamic>{
       "username": username,
       "email": email,
       "emailVisibility": true,
@@ -38,19 +43,20 @@ class AuthService {
 
     try {
       final record = await client.collection('users').create(body: body);
-      return {
-        'status': 'success',
-        'data': record
-      };
-    } catch (error) {
-      return {
-        'status': 'failed',
-        'data': error
-      };
+      return record;
+    } on ClientException catch (error) {
+      final data = error.response['data'];
+      throw "${data.keys.first}: ${data.values.first['message']}";
     }
   }
 
-  static void logout() {
+  void logout() {
     client.authStore.clear();
+  }
+
+  @override
+  void dispose() {
+    loginStatusController.close();
+    super.dispose();
   }
 }

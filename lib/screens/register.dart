@@ -1,6 +1,8 @@
+import 'package:bunkerlink/services/auth/service.dart';
 import 'package:bunkerlink/widgets/MyButton.dart';
 import 'package:bunkerlink/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   final void Function()? onTap;
@@ -16,10 +18,33 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final nicknameController = TextEditingController();
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
 
-  void handleRegister() async {}
+  void handleRegister() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final email = emailController.text;
+    final password = passwordController.text;
+    final passwordConfirm = passwordConfirmController.text;
+    final username = usernameController.text;
+    final nickname = nicknameController.text;
+
+    try {
+      if (password != passwordConfirm) {
+        throw 'Passwords do not match';
+      }
+      await authService.register(username, email, password, nickname);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +89,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hintText: 'Email',
                 obscureText: false,
                 decoration: InputDecoration(
-                  labelText: 'Username or Email',
+                  labelText: 'Email',
+                  prefixIcon: const Icon(Icons.email, color: Colors.lightGreen),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20.0),
+
+              // username field
+              MyTextField(
+                controller: usernameController,
+                hintText: 'Username',
+                obscureText: false,
+                decoration: InputDecoration(
+                  labelText: 'Username',
                   prefixIcon:
                       const Icon(Icons.person, color: Colors.lightGreen),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20.0),
+
+              // nickname field
+              MyTextField(
+                controller: nicknameController,
+                hintText: 'Nickname',
+                obscureText: false,
+                decoration: InputDecoration(
+                  labelText: 'Nickname',
+                  prefixIcon: const Icon(Icons.person_2_rounded,
+                      color: Colors.lightGreen),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),

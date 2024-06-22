@@ -1,5 +1,7 @@
+import 'package:bunkerlink/services/auth/service.dart';
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -23,13 +25,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
         break;
       case 3:
         Navigator.pushNamed(context, '/profile');
-        break;        
+        break;
     }
+  }
+
+  void handleLogout() {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    authService.logout();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        foregroundColor: Colors.black,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: handleLogout,
+          ),
+        ],
+      ),
       body: const Center(
         child: Text('Profile Screen'),
       ),

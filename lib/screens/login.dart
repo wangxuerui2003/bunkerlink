@@ -2,6 +2,7 @@ import 'package:bunkerlink/services/auth/service.dart';
 import 'package:bunkerlink/widgets/MyButton.dart';
 import 'package:bunkerlink/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   final void Function()? onTap;
@@ -17,7 +18,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void handleLogin() async {}
+  void handleLogin() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final email = emailController.text;
+    final password = passwordController.text;
+
+    try {
+      await authService.login(email, password);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
