@@ -1,4 +1,4 @@
-import 'package:bunkerlink/services/message/service.dart';
+import 'package:bunkerlink/services/chat/service.dart';
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:bunkerlink/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageTextController = TextEditingController();
   final List<String> _messages = [];
   final FocusNode _focusNode = FocusNode();
-  final MessageService _messageService = MessageService();
+  final ChatService _chatService = ChatService();
 
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _sendMessage() async {
     if (_messageTextController.text.isNotEmpty) {
       try {
-        await _messageService.sendMessage(_messageTextController.text);
+        await _chatService.sendMessage(_messageTextController.text);
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
