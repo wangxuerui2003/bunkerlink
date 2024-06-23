@@ -1,5 +1,9 @@
+import 'package:bunkerlink/env/environment.dart';
+import 'package:bunkerlink/services/message/service.dart';
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
+import 'package:bunkerlink/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -7,34 +11,85 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final int _selectedIndex = 0; // Assuming chat is the first item
+  final TextEditingController _messageTextController = TextEditingController();
+  final List<String> _messages = [];
+  final FocusNode _focusNode = FocusNode();
+  final MessageService _messageService = MessageService();
 
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, '/chat');
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/map');
-        break;
-      case 2:
-        Navigator.pushNamed(context, '/sos');
-        break;
-      case 3:
-        Navigator.pushNamed(context, '/profile');
-        break;        
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _sendMessage() async {
+    if (_messageTextController.text.isNotEmpty) {
+      try {
+        await _messageService.sendMessage(_messageTextController.text);
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.toString()),
+          ),
+        );
+      }
+      setState(() {
+        _messages.add(_messageTextController.text);
+        _messageTextController.clear();
+        _focusNode.requestFocus();
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(
-        child: Text('Chat Screen'),
+      appBar: AppBar(
+        title: const Text('Chat'),
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_messages[index]),
+                );
+              },
+            ),
+          ),
+          _buildInputBar(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputBar() {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: MyTextField(
+              controller: _messageTextController,
+              hintText: 'Type a message',
+              obscureText: false,
+              focusNode: _focusNode,
+              onSubmitted: (value) {
+                _sendMessage();
+              },
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.send),
+            onPressed: _sendMessage,
+          ),
+        ],
       ),
     );
   }
