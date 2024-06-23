@@ -1,9 +1,7 @@
-import 'package:bunkerlink/env/environment.dart';
 import 'package:bunkerlink/services/message/service.dart';
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:bunkerlink/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -62,6 +60,10 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           _buildInputBar(),
         ],
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0,
+        onTap: (index) {},
       ),
     );
   }
