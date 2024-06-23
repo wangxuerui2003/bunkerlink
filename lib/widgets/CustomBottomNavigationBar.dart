@@ -3,6 +3,7 @@ import 'package:bunkerlink/screens/map.dart';
 import 'package:bunkerlink/screens/profile.dart';
 import 'package:bunkerlink/screens/rooms.dart';
 import 'package:bunkerlink/screens/sos.dart';
+import 'package:bunkerlink/services/auth/gate.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -24,7 +25,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => RoomsScreen(),
+                pageBuilder: (_, __, ___) =>
+                    const AuthGate(screen: RoomsScreen()),
                 transitionDuration: Duration.zero,
               ),
             );
@@ -33,7 +35,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => MapScreen(),
+                pageBuilder: (_, __, ___) => AuthGate(screen: MapScreen()),
                 transitionDuration: Duration.zero,
               ),
             );
@@ -42,7 +44,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => SosScreen(),
+                pageBuilder: (_, __, ___) => AuthGate(screen: SosScreen()),
                 transitionDuration: Duration.zero,
               ),
             );
@@ -51,7 +53,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => ProfileScreen(),
+                pageBuilder: (_, __, ___) =>
+                    const AuthGate(screen: ProfileScreen()),
                 transitionDuration: Duration.zero,
               ),
             );

@@ -1,5 +1,6 @@
 import 'package:bunkerlink/screens/profile.dart';
 import 'package:bunkerlink/screens/rooms.dart';
+import 'package:bunkerlink/services/auth/gate.dart';
 import 'package:bunkerlink/services/auth/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -23,11 +24,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: FrontScreen(),
       routes: {
-        '/map': (context) => MapScreen(),
-        '/rooms': (context) => RoomsScreen(),
-        '/sos': (context) => SosScreen(),
-        '/profile': (context) => const ProfileScreen(),
-        '/chat': (context) => ChatScreen(),
+        '/map': (context) => AuthGate(screen: MapScreen()),
+        '/rooms': (context) => const AuthGate(screen: RoomsScreen()),
+        '/sos': (context) => AuthGate(screen: SosScreen()),
+        '/profile': (context) => const AuthGate(screen: ProfileScreen()),
+        '/chat': (context) => AuthGate(screen: ChatScreen()),
       },
     );
   }
