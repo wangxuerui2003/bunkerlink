@@ -61,10 +61,6 @@ class _ChatScreenState extends State<ChatScreen> {
           _buildInputBar(),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {},
-      ),
     );
   }
 

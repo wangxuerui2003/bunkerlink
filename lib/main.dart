@@ -1,4 +1,5 @@
 import 'package:bunkerlink/screens/profile.dart';
+import 'package:bunkerlink/screens/rooms.dart';
 import 'package:bunkerlink/services/auth/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -23,9 +24,10 @@ class MyApp extends StatelessWidget {
       home: FrontScreen(),
       routes: {
         '/map': (context) => MapScreen(),
-        '/chat': (context) => ChatScreen(),
+        '/rooms': (context) => RoomsScreen(),
         '/sos': (context) => SosScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/chat': (context) => ChatScreen(),
       },
     );
   }
@@ -40,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    ChatScreen(),
+    RoomsScreen(),
     MapScreen(),
     SosScreen(),
     const ProfileScreen()

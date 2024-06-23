@@ -1,6 +1,7 @@
 import 'package:bunkerlink/screens/chat.dart';
 import 'package:bunkerlink/screens/map.dart';
 import 'package:bunkerlink/screens/profile.dart';
+import 'package:bunkerlink/screens/rooms.dart';
 import 'package:bunkerlink/screens/sos.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => ChatScreen(),
+                pageBuilder: (_, __, ___) => RoomsScreen(),
                 transitionDuration: Duration.zero,
               ),
             );
@@ -59,12 +60,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
       }
     }
 
-
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.chat),
-          label: 'Chat',
+          icon: Icon(Icons.house),
+          label: 'Rooms',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.map),
