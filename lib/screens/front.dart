@@ -1,4 +1,5 @@
 import 'package:bunkerlink/screens/map.dart';
+import 'package:bunkerlink/screens/profile.dart';
 import 'package:bunkerlink/services/auth/gate.dart';
 import 'package:flutter/material.dart';
 
@@ -38,8 +39,8 @@ class FrontScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        // builder: (context) => const LoginScreen()),
-                        builder: (context) => const AuthGate(),
+                        builder: (context) =>
+                            const AuthGate(screen: ProfileScreen()),
                       ));
                 },
                 style: ButtonStyle(

@@ -7,7 +7,8 @@ import 'package:pocketbase/pocketbase.dart';
 import 'package:provider/provider.dart';
 
 class AuthGate extends StatelessWidget {
-  const AuthGate({super.key});
+  final Widget screen;
+  const AuthGate({super.key, this.screen = const ProfileScreen()});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class AuthGate extends StatelessWidget {
         initialData: authService.isLoggedIn,
         builder: (context, snapshot) {
           if (snapshot.data ?? false) {
-            return const ProfileScreen();
+            return screen;
           } else {
             return const LoginOrRegister();
           }
