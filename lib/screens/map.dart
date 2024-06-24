@@ -43,7 +43,7 @@ class _MapScreenState extends State<MapScreen> {
           MapWidget(
             isLocationEnabled: _isLocationEnabled,
           ),
-          LocationSearchWidget(controller: controller),
+          // LocationSearchWidget(controller: controller),
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
