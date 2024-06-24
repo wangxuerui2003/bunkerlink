@@ -72,9 +72,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _buildInputBar() {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
         color: Colors.grey[200],
+        border: Border(
+          top: BorderSide(color: Colors.grey[300]!),
+        ),
       ),
       child: Row(
         children: [
@@ -90,7 +93,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.send),
+            icon: Icon(Icons.send, color: Theme.of(context).primaryColor),
             onPressed: _sendMessage,
           ),
         ],
@@ -98,7 +101,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  // build message list
   Widget _buildMessageList() {
     return StreamBuilder(
       stream: _chatService.messagesStream,
@@ -109,29 +111,37 @@ class _ChatScreenState extends State<ChatScreen> {
             itemCount: records.length,
             itemBuilder: (context, index) {
               Message message = records[index];
-              return _buildMessageItem(records[index]);
+              return _buildMessageItem(message);
             },
           );
         } else {
-          return const CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
     );
   }
 
-  // build message item
   Widget _buildMessageItem(Message message) {
-    // align sender message to the right and other messages to the left
-    var alignment = message.senderId == _chatService.client.authStore.model?.id
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
+    var isSender = message.senderId == _chatService.client.authStore.model?.id;
+    var alignment = isSender ? Alignment.centerRight : Alignment.centerLeft;
+    var backgroundColor = isSender ? Colors.blue[100] : Colors.grey[300];
+    var textColor = isSender ? Colors.black : Colors.black;
 
     return Container(
       alignment: alignment,
-      child: Column(
-        children: [
-          Text(message.text),
-        ],
+      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+      child: Container(
+        padding: const EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Text(
+          message.text,
+          style: TextStyle(color: textColor),
+        ),
       ),
     );
   }

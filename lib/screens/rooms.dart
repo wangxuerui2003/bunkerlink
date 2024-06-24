@@ -17,6 +17,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
         title: const Text('Rooms'),
         foregroundColor: Colors.black,
         elevation: 0,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
           child: MyButton(
