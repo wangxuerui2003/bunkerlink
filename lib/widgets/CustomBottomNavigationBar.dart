@@ -1,4 +1,4 @@
-import 'package:bunkerlink/screens/chat.dart';
+import 'package:bunkerlink/screens/guide.dart';
 import 'package:bunkerlink/screens/map.dart';
 import 'package:bunkerlink/screens/profile.dart';
 import 'package:bunkerlink/screens/rooms.dart';
@@ -54,6 +54,16 @@ class CustomBottomNavigationBar extends StatelessWidget {
               context,
               PageRouteBuilder(
                 pageBuilder: (_, __, ___) =>
+                    const AuthGate(screen: GuideScreen()),
+                transitionDuration: Duration.zero,
+              ),
+            );
+            break;            
+          case 4:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) =>
                     const AuthGate(screen: ProfileScreen()),
                 transitionDuration: Duration.zero,
               ),
@@ -77,6 +87,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
           icon: Icon(Icons.warning),
           label: 'SOS',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.question_mark_outlined),
+          label: 'Guide',
+        ),        
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',

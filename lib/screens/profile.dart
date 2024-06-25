@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'John Doe',
+              'Authenticated Username',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -77,9 +77,9 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 3,
+        currentIndex: 4,
         onTap: (index) {},
-      ),      
+      ),
     );
   }
 }

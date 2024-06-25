@@ -17,11 +17,11 @@ class MyButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.lightGreen, // Button background color
         foregroundColor: Colors.white, // Text color
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontSize: 20.0,
         ),
       ),
