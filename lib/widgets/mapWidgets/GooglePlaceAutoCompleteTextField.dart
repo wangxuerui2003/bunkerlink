@@ -4,8 +4,12 @@ import 'package:google_places_flutter/model/prediction.dart';
 
 class LocationSearchWidget extends StatelessWidget {
   final TextEditingController controller;
+  final Function(double, double) onPlaceSelected;
 
-  LocationSearchWidget({required this.controller});
+  LocationSearchWidget({
+    required this.controller,
+    required this.onPlaceSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +34,7 @@ class LocationSearchWidget extends StatelessWidget {
           ),
           getPlaceDetailWithLatLng: (Prediction prediction) {
             print("Place Details: ${prediction.lat}, ${prediction.lng}");
+            onPlaceSelected(prediction.lat as double, prediction.lng as double);
           },
           itemClick: (Prediction prediction) {
             controller.text = prediction.description ?? "Enter your location";
