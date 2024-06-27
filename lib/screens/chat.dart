@@ -1,5 +1,6 @@
 import 'package:bunkerlink/models/message.dart';
 import 'package:bunkerlink/services/chat/service.dart';
+import 'package:bunkerlink/widgets/ChatBubble.dart';
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:bunkerlink/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageTextController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final ChatService _chatService = ChatService();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -105,10 +107,21 @@ class _ChatScreenState extends State<ChatScreen> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Message> records = snapshot.data!;
+          // Scroll to bottom on new data
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_scrollController.hasClients) {
+              _scrollController.animateTo(
+                _scrollController.position.maxScrollExtent,
+                duration: Duration(milliseconds: 100),
+                curve: Curves.easeOut,
+              );
+            }
+          });
           return ListView.builder(
+            controller: _scrollController,
             itemCount: records.length,
             itemBuilder: (context, index) {
-              Message message = records[index];
+              // Message message = records[index];
               return _buildMessageItem(records[index]);
             },
           );
@@ -125,14 +138,27 @@ class _ChatScreenState extends State<ChatScreen> {
     var alignment = message.userId == _chatService.client.authStore.model?.id
         ? Alignment.centerRight
         : Alignment.centerLeft;
+    var crossAxisAlignment =
+        message.userId == _chatService.client.authStore.model?.id
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start;
+    var mainAxisAlignment =
+        message.userId == _chatService.client.authStore.model?.id
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start;
 
     return Container(
       alignment: alignment,
-      child: Column(
-        children: [
-          Text(message.userData?['nickname'] ?? 'Unknown'),
-          Text(message.text),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: crossAxisAlignment,
+          mainAxisAlignment: mainAxisAlignment,
+          children: [
+            Text(message.userData?['nickname'] ?? 'Unknown'),
+            Chatbubble(text: message.text),
+          ],
+        ),
       ),
     );
   }
