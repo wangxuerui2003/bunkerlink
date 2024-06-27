@@ -122,7 +122,7 @@ class _ChatScreenState extends State<ChatScreen> {
   // build message item
   Widget _buildMessageItem(Message message) {
     // align sender message to the right and other messages to the left
-    var alignment = message.senderId == _chatService.client.authStore.model?.id
+    var alignment = message.userId == _chatService.client.authStore.model?.id
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
@@ -130,6 +130,7 @@ class _ChatScreenState extends State<ChatScreen> {
       alignment: alignment,
       child: Column(
         children: [
+          Text(message.userData?['nickname'] ?? 'Unknown'),
           Text(message.text),
         ],
       ),
