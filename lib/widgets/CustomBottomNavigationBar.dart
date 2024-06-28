@@ -35,7 +35,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
-                pageBuilder: (_, __, ___) => AuthGate(screen: MapScreen()),
+                pageBuilder: (_, __, ___) => MapScreen(),
                 transitionDuration: Duration.zero,
               ),
             );

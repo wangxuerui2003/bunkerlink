@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: FrontScreen(),
       routes: {
-        '/map': (context) => AuthGate(screen: MapScreen()),
+        '/map': (context) => MapScreen(),
         '/rooms': (context) => const AuthGate(screen: RoomsScreen()),
         '/sos': (context) => AuthGate(screen: SosScreen()),
         '/profile': (context) => const AuthGate(screen: ProfileScreen()),

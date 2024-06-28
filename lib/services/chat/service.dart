@@ -21,11 +21,18 @@ class ChatService {
   Future<void> sendMessage(String message) async {
     Message newMessage = Message(
       text: message,
-      senderId: client.authStore.model?.id,
+      userId: client.authStore.model?.id,
     );
 
     try {
       await client.collection('messages').create(body: newMessage.toJson());
+      final user =
+          await client.collection('users').getOne(client.authStore.model!.id);
+      List<dynamic> userMessages = user.data['messages'] ?? [];
+      userMessages.add(newMessage.toJson());
+      await client
+          .collection('users')
+          .update(client.authStore.model!.id, body: {'messages': userMessages});
     } on ClientException catch (error) {
       throw error.response['message'];
     }
@@ -35,9 +42,9 @@ class ChatService {
     try {
       final response = await client
           .collection('messages')
-          .getList(page: 1, perPage: 50, expand: 'sender');
+          .getList(page: 1, perPage: 50, expand: 'userId');
       List<Message> messages =
-          response.items.map((e) => Message.fromJson(e.data)).toList();
+          response.items.map((e) => Message.fromJson(e.toJson())).toList();
       _messages.addAll(messages);
       _messagesController.add(messages);
       return messages;
@@ -47,8 +54,11 @@ class ChatService {
   }
 
   void subscribeToMessages() {
-    client.collection('messages').subscribe('*', (e) {
-      _messages.add(Message.fromJson(e.record!.data));
+    client.collection('messages').subscribe('*', (e) async {
+      RecordModel msgModel = await client
+          .collection('messages')
+          .getOne(e.record!.id, expand: 'userId');
+      _messages.add(Message.fromJson(msgModel.toJson()));
       _messagesController.add(_messages);
     });
   }
