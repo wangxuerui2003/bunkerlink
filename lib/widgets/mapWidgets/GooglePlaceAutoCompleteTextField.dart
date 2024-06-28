@@ -1,3 +1,4 @@
+import 'package:bunkerlink/env/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
@@ -24,7 +25,7 @@ class LocationSearchWidget extends StatelessWidget {
         ),
         child: GooglePlaceAutoCompleteTextField(
           textEditingController: controller,
-          googleAPIKey: "AIzaSyDEeSyYedSX-iemRyqMhDnh3QVx0dRVeNE",
+          googleAPIKey: Environment.googlePlacesApiKey,
           debounceTime: 800,
           isLatLngRequired: true,
           inputDecoration: const InputDecoration(

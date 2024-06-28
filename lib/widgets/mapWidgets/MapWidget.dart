@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:bunkerlink/env/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -136,7 +137,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   Future<List<Marker>> _getNearbyHospitals(Position position) async {
     List<Marker> newMarkers = [];
-    String apiKey = 'AIzaSyDEeSyYedSX-iemRyqMhDnh3QVx0dRVeNE';
+    String apiKey = Environment.googleApiKey;
     String url =
         'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${position.latitude},${position.longitude}&radius=5000&type=hospital&key=$apiKey';
 
@@ -159,12 +160,14 @@ class _MapWidgetState extends State<MapWidget> {
                 title: name,
                 snippet: 'Shelter',
               ),
-              icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueAzure),
             ),
           );
         }
       } else {
-        _showErrorSnackBar("Error fetching data from API: ${response.statusCode}");
+        _showErrorSnackBar(
+            "Error fetching data from API: ${response.statusCode}");
       }
     } catch (e) {
       _showErrorSnackBar("Error fetching data from API: $e");
