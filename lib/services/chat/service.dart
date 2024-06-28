@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:bunkerlink/models/message.dart';
 import 'package:bunkerlink/services/pocketbase.dart';
-import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class ChatService {
@@ -38,6 +37,19 @@ class ChatService {
     }
   }
 
+  Future<void> sendSOS(Position position) async {
+    Message newMessage = Message(
+      text: "SOS: ${position.latitude}, ${position.longitude}",
+      userId: null,
+    );
+
+    try {
+      await client.collection('messages').create(body: newMessage.toJson());
+    } on ClientException catch (error) {
+      throw error.response['message'];
+    }
+  }
+
   Future<List<Message>> getNextPageMessages() async {
     try {
       final response = await client
@@ -65,8 +77,7 @@ class ChatService {
 
   Stream<List<Message>> get messagesStream => _messagesController.stream;
 
-  @override
-  void dispose() {
+  void unsubscribeFromMessages() {
     _messagesController.close();
     client.collection('messages').unsubscribe('*');
   }

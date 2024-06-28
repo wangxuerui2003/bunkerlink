@@ -6,6 +6,11 @@ import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
+  double? lat;
+  double? long;
+
+  MapScreen({this.lat, this.long});
+
   @override
   _MapScreenState createState() => _MapScreenState();
 }
@@ -13,11 +18,26 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   bool _isLocationEnabled = false;
   late GoogleMapController mapController;
+  late CameraPosition initialCameraPosition;
+  late bool emergency;
 
   @override
   void initState() {
     super.initState();
     _checkLocationPermission();
+    if (widget.lat != null && widget.long != null) {
+      initialCameraPosition = CameraPosition(
+        target: LatLng(widget.lat!, widget.long!),
+        zoom: 11.0,
+      );
+      emergency = true;
+    } else {
+      initialCameraPosition = const CameraPosition(
+        target: LatLng(3.1390, 101.6869),
+        zoom: 11.0,
+      );
+      emergency = false;
+    }
   }
 
   Future<void> _checkLocationPermission() async {
@@ -51,17 +71,19 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
-    
+    // TextEditingController textController = TextEditingController();
+
     return Scaffold(
       body: Stack(
         children: [
           MapWidget(
             isLocationEnabled: _isLocationEnabled,
             onMapCreated: _onMapCreated,
+            initialCameraPosition: initialCameraPosition,
+            emergency: emergency,
           ),
           // LocationSearchWidget(
-          //   controller: controller,
+          //   controller: textController,
           //   onPlaceSelected: (lat, lng) {
           //     _moveCameraToPosition(lat, lng);
           //   },

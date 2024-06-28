@@ -1,5 +1,5 @@
 name: bunkerlink
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 publish_to: 'none'
 version: 0.1.0
 
@@ -15,6 +15,7 @@ dependencies:
   google_maps_flutter: ^2.7.0
   google_places_flutter: ^2.0.8
   http: ^1.2.1
+  image_picker: ^1.1.2
   location: ^6.0.2
   logging: ^1.2.0
   pocketbase: ^0.18.1

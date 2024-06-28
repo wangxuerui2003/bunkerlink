@@ -18,8 +18,8 @@ class GuideScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
                 'assets/monster.png',
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -46,11 +46,18 @@ class GuideScreen extends StatelessWidget {
               'Predators use advanced weaponry and equipment:',
               icon: Icons.build,
               children: [
-                _buildBullet('Cloaking Device', 'Makes them nearly invisible.', Icons.visibility_off),
-                _buildBullet('Plasma Caster', 'Shoulder-mounted energy weapon.', Icons.bolt),
-                _buildBullet('Wrist Blades', 'Retractable blades on their arms.', Icons.cut),
-                _buildBullet('Biomask', 'Enhances vision modes and provides a targeting system.', Icons.visibility),
-                _buildBullet('Self-Destruct Device', 'Used as a last resort to avoid capture.', Icons.warning),
+                _buildBullet('Cloaking Device', 'Makes them nearly invisible.',
+                    Icons.visibility_off),
+                _buildBullet('Plasma Caster', 'Shoulder-mounted energy weapon.',
+                    Icons.bolt),
+                _buildBullet('Wrist Blades',
+                    'Retractable blades on their arms.', Icons.cut),
+                _buildBullet(
+                    'Biomask',
+                    'Enhances vision modes and provides a targeting system.',
+                    Icons.visibility),
+                _buildBullet('Self-Destruct Device',
+                    'Used as a last resort to avoid capture.', Icons.warning),
               ],
             ),
             const SizedBox(height: 20),
@@ -195,11 +202,12 @@ class GuideScreen extends StatelessWidget {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 3,
         onTap: (index) {},
-      ),    
+      ),
     );
   }
 
-  Widget _buildSubSection(String title, String content, {List<Widget>? children, IconData? icon}) {
+  Widget _buildSubSection(String title, String content,
+      {List<Widget>? children, IconData? icon}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -218,10 +226,13 @@ class GuideScreen extends StatelessWidget {
           content,
           style: const TextStyle(fontSize: 14),
         ),
-        if (children != null) ...children.map((child) => Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: child,
-        )).toList(),
+        if (children != null)
+          ...children
+              .map((child) => Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: child,
+                  ))
+              .toList(),
         const SizedBox(height: 10),
       ],
     );

@@ -25,6 +25,15 @@ class _ChatScreenState extends State<ChatScreen> {
     _chatService.subscribeToMessages();
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _focusNode.dispose();
+    _messageTextController.dispose();
+    _chatService.unsubscribeFromMessages();
+    super.dispose();
+  }
+
   Future<void> _initMessages() async {
     try {
       await _chatService.initMessages();
@@ -112,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
             if (_scrollController.hasClients) {
               _scrollController.animateTo(
                 _scrollController.position.maxScrollExtent,
-                duration: Duration(milliseconds: 100),
+                duration: const Duration(milliseconds: 100),
                 curve: Curves.easeOut,
               );
             }
@@ -126,7 +135,7 @@ class _ChatScreenState extends State<ChatScreen> {
             },
           );
         } else {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );
@@ -155,7 +164,7 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: crossAxisAlignment,
           mainAxisAlignment: mainAxisAlignment,
           children: [
-            Text(message.userData?['nickname'] ?? 'Unknown'),
+            Text(message.userData?['nickname'] ?? 'SOS User'),
             Chatbubble(text: message.text),
           ],
         ),

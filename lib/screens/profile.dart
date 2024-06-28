@@ -1,14 +1,28 @@
+import 'package:bunkerlink/models/user.dart';
 import 'package:bunkerlink/services/auth/service.dart';
+import 'package:bunkerlink/widgets/Avatar.dart';
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
-  void handleLogout(BuildContext context) {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  Future<User>? userFuture;
+  void handleLogout() {
     final authService = Provider.of<AuthService>(context, listen: false);
     authService.logout();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userFuture = Provider.of<AuthService>(context, listen: false).getUser();
   }
 
   @override
@@ -19,62 +33,69 @@ class ProfileScreen extends StatelessWidget {
         foregroundColor: Colors.black,
         automaticallyImplyLeading: false,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: handleLogout,
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Authenticated Username',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Stay safe, bye bye!',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => handleLogout(context),
-              style: ButtonStyle(
-                backgroundColor:
-                    WidgetStateProperty.all<Color>(Colors.green),
-                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+      body: FutureBuilder<User>(
+        future: userFuture, // This is your userFuture from initState
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (snapshot.hasData) {
+            User user = snapshot.data!;
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Avatar(user: user),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Tap avatar to change",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: 12, horizontal: 24),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.logout_sharp,
-                      color: Colors.white,
+                  const SizedBox(height: 12),
+                  Text(
+                    user.nickname,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.lightGreen,
                     ),
-                    SizedBox(width: 8.0),
-                    Text(
-                      'Logout',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                      ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    '@${user.username}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.grey,
                     ),
-                  ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    user.email,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                      fontFamily: 'RobotoMono',
+                    ),
+                  ),
+                ],
               ),
-            ),
-          )
-          ],
-        ),
+            );
+          } else {
+            return const Center(child: Text("User not found"));
+          }
+        },
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 4,

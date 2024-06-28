@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:bunkerlink/env/environment.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,11 +9,15 @@ import 'package:http/http.dart' as http;
 class MapWidget extends StatefulWidget {
   final bool isLocationEnabled;
   final Function(GoogleMapController) onMapCreated;
+  final CameraPosition initialCameraPosition;
+  final bool emergency;
 
   MapWidget({
     Key? key,
     required this.isLocationEnabled,
     required this.onMapCreated,
+    required this.initialCameraPosition,
+    this.emergency = false,
   }) : super(key: key);
 
   @override
@@ -48,16 +53,22 @@ class _MapWidgetState extends State<MapWidget> {
             widget.onMapCreated(controller);
             _onMapCreated(controller);
           },
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(3.1390, 101.6869),
-            zoom: 11.0,
-          ),
+          initialCameraPosition: widget.initialCameraPosition,
           myLocationEnabled: widget.isLocationEnabled,
           myLocationButtonEnabled: true,
-          markers: Set<Marker>.of(markers),
+          markers: widget.emergency
+              ? {
+                  Marker(
+                    markerId: const MarkerId('1'),
+                    position: LatLng(
+                        widget.initialCameraPosition.target.latitude,
+                        widget.initialCameraPosition.target.longitude),
+                  )
+                }
+              : Set<Marker>.of(markers),
         ),
         if (isLoading)
-          Center(
+          const Center(
             child: CircularProgressIndicator(),
           ),
       ],
@@ -136,7 +147,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   Future<List<Marker>> _getNearbyHospitals(Position position) async {
     List<Marker> newMarkers = [];
-    String apiKey = 'AIzaSyDEeSyYedSX-iemRyqMhDnh3QVx0dRVeNE';
+    String apiKey = Environment.googleApiKey;
     String url =
         'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${position.latitude},${position.longitude}&radius=5000&type=hospital&key=$apiKey';
 
@@ -159,12 +170,14 @@ class _MapWidgetState extends State<MapWidget> {
                 title: name,
                 snippet: 'Shelter',
               ),
-              icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueAzure),
             ),
           );
         }
       } else {
-        _showErrorSnackBar("Error fetching data from API: ${response.statusCode}");
+        _showErrorSnackBar(
+            "Error fetching data from API: ${response.statusCode}");
       }
     } catch (e) {
       _showErrorSnackBar("Error fetching data from API: $e");
