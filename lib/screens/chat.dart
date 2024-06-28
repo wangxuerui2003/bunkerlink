@@ -1,5 +1,6 @@
 import 'package:bunkerlink/models/message.dart';
 import 'package:bunkerlink/services/chat/service.dart';
+import 'package:bunkerlink/widgets/ChatBubble.dart';
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:bunkerlink/widgets/MyTextField.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageTextController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final ChatService _chatService = ChatService();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -72,12 +74,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _buildInputBar() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Colors.grey[200],
-        border: Border(
-          top: BorderSide(color: Colors.grey[300]!),
-        ),
       ),
       child: Row(
         children: [
@@ -93,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send, color: Theme.of(context).primaryColor),
+            icon: const Icon(Icons.send),
             onPressed: _sendMessage,
           ),
         ],
@@ -101,46 +100,64 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  // build message list
   Widget _buildMessageList() {
     return StreamBuilder(
       stream: _chatService.messagesStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Message> records = snapshot.data!;
+          // Scroll to bottom on new data
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_scrollController.hasClients) {
+              _scrollController.animateTo(
+                _scrollController.position.maxScrollExtent,
+                duration: Duration(milliseconds: 100),
+                curve: Curves.easeOut,
+              );
+            }
+          });
           return ListView.builder(
+            controller: _scrollController,
             itemCount: records.length,
             itemBuilder: (context, index) {
-              Message message = records[index];
-              return _buildMessageItem(message);
+              // Message message = records[index];
+              return _buildMessageItem(records[index]);
             },
           );
         } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return const CircularProgressIndicator();
         }
       },
     );
   }
 
+  // build message item
   Widget _buildMessageItem(Message message) {
-    var isSender = message.senderId == _chatService.client.authStore.model?.id;
-    var alignment = isSender ? Alignment.centerRight : Alignment.centerLeft;
-    var backgroundColor = isSender ? Colors.blue[100] : Colors.grey[300];
-    var textColor = isSender ? Colors.black : Colors.black;
+    // align sender message to the right and other messages to the left
+    var alignment = message.userId == _chatService.client.authStore.model?.id
+        ? Alignment.centerRight
+        : Alignment.centerLeft;
+    var crossAxisAlignment =
+        message.userId == _chatService.client.authStore.model?.id
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start;
+    var mainAxisAlignment =
+        message.userId == _chatService.client.authStore.model?.id
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start;
 
     return Container(
       alignment: alignment,
-      margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-      child: Container(
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Text(
-          message.text,
-          style: TextStyle(color: textColor),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: crossAxisAlignment,
+          mainAxisAlignment: mainAxisAlignment,
+          children: [
+            Text(message.userData?['nickname'] ?? 'Unknown'),
+            Chatbubble(text: message.text),
+          ],
         ),
       ),
     );
