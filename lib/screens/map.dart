@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:bunkerlink/widgets/mapWidgets/GooglePlaceAutoCompleteTextField.dart';
 import 'package:bunkerlink/widgets/mapWidgets/MapWidget.dart';
 import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   bool _isLocationEnabled = false;
+  late GoogleMapController mapController;
 
   @override
   void initState() {
@@ -33,6 +35,20 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+  void _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      mapController = controller;
+    });
+  }
+
+  void _moveCameraToPosition(double lat, double lng) {
+    mapController.animateCamera(
+      CameraUpdate.newLatLng(
+        LatLng(lat, lng),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController controller = TextEditingController();
@@ -42,8 +58,14 @@ class _MapScreenState extends State<MapScreen> {
         children: [
           MapWidget(
             isLocationEnabled: _isLocationEnabled,
+            onMapCreated: _onMapCreated,
           ),
-          LocationSearchWidget(controller: controller),
+          // LocationSearchWidget(
+          //   controller: controller,
+          //   onPlaceSelected: (lat, lng) {
+          //     _moveCameraToPosition(lat, lng);
+          //   },
+          // ),
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(

@@ -1,3 +1,4 @@
+import 'package:bunkerlink/screens/guide.dart';
 import 'package:bunkerlink/screens/profile.dart';
 import 'package:bunkerlink/screens/rooms.dart';
 import 'package:bunkerlink/services/auth/gate.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/rooms': (context) => const AuthGate(screen: RoomsScreen()),
         '/sos': (context) => AuthGate(screen: SosScreen()),
         '/profile': (context) => const AuthGate(screen: ProfileScreen()),
+        '/guide': (context) => const AuthGate(screen: GuideScreen()),
         '/chat': (context) => AuthGate(screen: ChatScreen()),
       },
     );
@@ -46,6 +48,7 @@ class _MainScreenState extends State<MainScreen> {
     RoomsScreen(),
     MapScreen(),
     SosScreen(),
+    GuideScreen(),
     const ProfileScreen()
   ];
 

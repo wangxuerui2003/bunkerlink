@@ -3,16 +3,10 @@ import 'package:bunkerlink/widgets/CustomBottomNavigationBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
 
-  @override
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-
-  void handleLogout() {
+  void handleLogout(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
     authService.logout();
   }
@@ -25,18 +19,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
         foregroundColor: Colors.black,
         automaticallyImplyLeading: false,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: handleLogout,
-          ),
-        ],
       ),
-      body: const Center(
-        child: Text('Profile Screen'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Authenticated Username',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Stay safe, bye bye!',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[600],
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => handleLogout(context),
+              style: ButtonStyle(
+                backgroundColor:
+                    WidgetStateProperty.all<Color>(Colors.green),
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: 12, horizontal: 24),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.logout_sharp,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 8.0),
+                    Text(
+                      'Logout',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+              ),
+            ),
+          )
+          ],
+        ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 3,
+        currentIndex: 4,
         onTap: (index) {},
       ),
     );

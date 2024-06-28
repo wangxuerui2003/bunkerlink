@@ -40,8 +40,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
-        foregroundColor: Colors.black, // To make the title color black
-        elevation: 0, // Removes the shadow under the AppBar
+        foregroundColor: Colors.black,
+        elevation: 0,
       ),
       body: Container(
         padding: const EdgeInsets.all(20.0),
@@ -68,11 +68,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(
                   fontSize: 18.0,
                 ),
-                textAlign: TextAlign.center, // Center the text
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40.0),
 
-              // email field
               MyTextField(
                 controller: emailController,
                 hintText: 'Email',
@@ -89,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20.0),
 
-              // password field
               MyTextField(
                 controller: passwordController,
                 hintText: "password",
@@ -105,7 +103,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 20.0),
 
-              // login button
               MyButton(onTap: handleLogin, text: "Sign In"),
 
               const SizedBox(height: 20.0),
