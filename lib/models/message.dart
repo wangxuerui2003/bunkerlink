@@ -1,11 +1,11 @@
 class Message {
   final String text;
-  final String userId;
+  final String? userId;
   final Map<String, dynamic>? userData;
 
   Message({
     required this.text,
-    required this.userId,
+    this.userId,
     this.userData,
   });
 

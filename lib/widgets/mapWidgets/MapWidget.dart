@@ -9,11 +9,15 @@ import 'package:http/http.dart' as http;
 class MapWidget extends StatefulWidget {
   final bool isLocationEnabled;
   final Function(GoogleMapController) onMapCreated;
+  final CameraPosition initialCameraPosition;
+  final bool emergency;
 
   MapWidget({
     Key? key,
     required this.isLocationEnabled,
     required this.onMapCreated,
+    required this.initialCameraPosition,
+    this.emergency = false,
   }) : super(key: key);
 
   @override
@@ -49,16 +53,22 @@ class _MapWidgetState extends State<MapWidget> {
             widget.onMapCreated(controller);
             _onMapCreated(controller);
           },
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(3.1390, 101.6869),
-            zoom: 11.0,
-          ),
+          initialCameraPosition: widget.initialCameraPosition,
           myLocationEnabled: widget.isLocationEnabled,
           myLocationButtonEnabled: true,
-          markers: Set<Marker>.of(markers),
+          markers: widget.emergency
+              ? {
+                  Marker(
+                    markerId: const MarkerId('1'),
+                    position: LatLng(
+                        widget.initialCameraPosition.target.latitude,
+                        widget.initialCameraPosition.target.longitude),
+                  )
+                }
+              : Set<Marker>.of(markers),
         ),
         if (isLoading)
-          Center(
+          const Center(
             child: CircularProgressIndicator(),
           ),
       ],
