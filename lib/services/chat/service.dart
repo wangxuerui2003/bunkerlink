@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:bunkerlink/models/message.dart';
 import 'package:bunkerlink/services/pocketbase.dart';
-import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class ChatService {

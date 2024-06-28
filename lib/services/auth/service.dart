@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bunkerlink/models/user.dart';
 import 'package:bunkerlink/services/pocketbase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -32,7 +33,8 @@ class AuthService with ChangeNotifier {
     final token = await _storage.read(key: 'authToken');
     if (token != null) {
       client.authStore.save(token, null);
-      client.collection('users').authRefresh();
+      RecordAuth model = await client.collection('users').authRefresh();
+      client.authStore.save(token, model.record);
     }
   }
 
@@ -44,6 +46,7 @@ class AuthService with ChangeNotifier {
           .collection('users')
           .authWithPassword(usernameOrEmail, password);
       await _saveAuthToken(authData.token);
+      client.authStore.save(authData.token, authData.record);
       return authData;
     } on ClientException catch (error) {
       throw error.response['message'];
@@ -68,6 +71,27 @@ class AuthService with ChangeNotifier {
       final data = error.response['data'];
       throw "${data.keys.first}: ${data.values.first['message']}";
     }
+  }
+
+  Future<User> getUser() async {
+    if (!client.authStore.isValid) {
+      return User(
+        id: '',
+        nickname: '',
+        username: '',
+        email: '',
+      );
+    }
+    final record =
+        await client.collection('users').getOne(client.authStore.model?.id);
+    final user = User.fromJson(record.toJson());
+    final avatarFilename = record.getListValue<String>('avatar').first;
+    if (avatarFilename != "") {
+      final avatarUrl =
+          client.files.getUrl(record, avatarFilename, thumb: '100x250');
+      user.setAvatar(avatarUrl.toString());
+    }
+    return user;
   }
 
   void logout() {
