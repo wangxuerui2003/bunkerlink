@@ -33,7 +33,7 @@ class _MapScreenState extends State<MapScreen> {
       emergency = true;
     } else {
       initialCameraPosition = const CameraPosition(
-        target: LatLng(3.1390, 101.6869),
+        target: LatLng(37.7749, -122.4194),
         zoom: 11.0,
       );
       emergency = false;
